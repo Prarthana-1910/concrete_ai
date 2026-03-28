@@ -1,37 +1,83 @@
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-df=pd.read_csv("data\FINAL_PROJECT_DATASET.csv")
+# Load dataset
+df = pd.read_csv("data/FINAL_PROJECT_DATASET.csv")
 
-"""EDA"""
 
-print(df["Strength"].describe())
+print("DATASET OVERVIEW")
+print(f"Rows    : {df.shape[0]}")
+print(f"Columns : {df.shape[1]}")
+print("\nCompressive Strength Summary:")
+print(df["Compressive_Strength_MPa"].describe())
 
-#Outlier Detection
-sns.boxplot(x=df["Strength"])
-plt.title("Outlier detection for Compression strength occupied in N days")
+
+# EDA - OUTLIER BOXPLOT
+plt.figure(figsize=(8, 4))
+sns.boxplot(x=df["Compressive_Strength_MPa"])
+plt.title("Outlier Detection for Compressive Strength")
+plt.tight_layout()
 plt.show()
 
-#Correlation matrixes
-attributes = ["Cement","GGBS", "FlyAsh", "Water", "CoarseAggregate", "Sand", "Admixture","age"]
-strength_cols = ["Strength"]
 
-for attr in attributes:
-    for i, col in enumerate(strength_cols):
-        corr_value = df[attr].corr(df[col])
-        corr_matrix = pd.DataFrame([[corr_value]], index=[attr], columns=[col])
-        
-        sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
-    plt.tight_layout()
-    plt.show()
+# EDA - CORRELATION HEATMAP
+correlation_columns = [
+    "Cement_kg_m3",
+    "Fly_Ash_kg_m3",
+    "GGBS_kg_m3",
+    "metakolin_kg_m3",
+    "TCM",
+    "Water_kg_m3",
+    "water/TCM",
+    "Sand_kg_m3",
+    "AGE",
+    "admixture",
+    "Coarse aggregate",
+    "Compressive_Strength_MPa"
+]
 
-"""Feature Engineering"""
-#Creating features DataFrame
-df2=df.copy()
+corr_matrix = df[correlation_columns].corr()
 
-#WBRatio
-df2["WBRatio"]=df["Water"]/(df["Cement"]+df["FlyAsh"]+df["GGBS"])
+plt.figure(figsize=(12, 9))
+sns.heatmap(
+    corr_matrix,
+    annot=True,
+    cmap="coolwarm",
+    vmin=-1,
+    vmax=1,
+    fmt=".2f"
+)
+plt.title("Correlation Heatmap")
+plt.tight_layout()
+plt.show()
 
-# Save df_copy to a CSV file
+# FEATURE ENGINEERING
+df2 = df.copy()
+
+# Core binder / SCM features
+df2["SCMContent"] = (
+    df2["Fly_Ash_kg_m3"] +
+    df2["GGBS_kg_m3"] +
+    df2["metakolin_kg_m3"]
+)
+
+df2["Binder"] = (
+    df2["Cement_kg_m3"] +
+    df2["SCMContent"]
+)
+
+# Important ratios
+df2["WBRatio"] = df2["Water_kg_m3"] / df2["Binder"]
+df2["AggregateToBinder"] = ( df2["Sand_kg_m3"] + df2["Coarse aggregate"]) / df2["Binder"]
+df2["AdmixtureToBinder"] = df2["admixture"] / df2["Binder"]
+
+
+# Clean infinite / NaN values
+df2 = df2.replace([np.inf, -np.inf], np.nan)
+df2 = df2.fillna(0)
+df2.drop(columns=["Density"], inplace=True)
+# Save processed dataset
 df2.to_csv("data/features.csv", index=False)
+print("FEATURE ENGINEERING COMPLETED")

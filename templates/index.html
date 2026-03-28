@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConcreteAI | Engineering Intelligence</title>
@@ -11,10 +12,16 @@
             --accent-blue: #3b82f6;
             --text-gray: #94a3b8;
             --border-color: #1e293b;
-            font-size: 14px; 
+            font-size: 14px;
         }
 
+
+
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+
+
+
 
         body {
             background-color: var(--bg-dark);
@@ -22,6 +29,9 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
+
+
+
 
         /* Navigation */
         nav {
@@ -34,9 +44,15 @@
             z-index: 10;
         }
 
+
+
+
         .logo { font-size: 1.3rem; font-weight: bold; cursor: pointer; }
-        
+       
         .nav-right { display: flex; align-items: center; gap: 25px; }
+
+
+
 
         .nav-links span {
             color: var(--text-gray);
@@ -44,8 +60,11 @@
             font-size: 0.9rem;
             transition: 0.3s;
         }
-        
+       
         .nav-links span:hover, .active { color: white !important; }
+
+
+
 
         .btn-get-estimate {
             background: rgba(59, 130, 246, 0.1);
@@ -60,13 +79,22 @@
             backdrop-filter: blur(8px);
         }
 
+
+
+
         .btn-get-estimate:hover {
             background: var(--accent-blue);
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
         }
 
+
+
+
         /* Home View */
         #home-view { display: block; }
+
+
+
 
         .hero {
             min-height: 130vh;
@@ -76,12 +104,11 @@
             background-position: center;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; 
+            justify-content: flex-start;
             align-items: flex-start;
             text-align: left;
-            padding: 120px 8% 0; 
+            padding: 120px 8% 0;
         }
-
         .hero h1 {
             font-size: 3.2rem;
             margin-bottom: 1.2rem;
@@ -89,15 +116,22 @@
             max-width: 800px;
         }
 
+
         .hero-description {
             color: var(--text-gray);
-            max-width: 650px; 
-            font-size: 1.2rem; 
+            max-width: 650px;
+            font-size: 1.2rem;
             margin-bottom: 3rem;
             line-height: 1.7;
         }
 
-        .highlights { display: flex; gap: 20px; width: 100%; }
+
+        .highlights {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+
 
         .stat-card {
             background: rgba(255, 255, 255, 0.04);
@@ -105,12 +139,19 @@
             border-radius: 12px;
             border: 1px solid var(--border-color);
             min-width: 160px;
-            backdrop-filter: blur(4px);
         }
 
-        .stat-card h3 { font-size: 1.5rem; color: var(--accent-blue); margin-bottom: 4px; }
-        .stat-card p { color: var(--text-gray); font-size: 0.85rem; }
 
+        .stat-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+        }
+
+
+        .stat-card p {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
         /* Estimator View */
         #estimator-view {
             display: none;
@@ -118,16 +159,25 @@
             min-height: 100vh;
         }
 
+
+
+
         .section-title { font-size: 2rem; margin-bottom: 3rem; }
+
+
+
 
         /* --- GRID LAYOUT --- */
         .grid-container {
             display: grid;
-            grid-template-columns: 1.3fr 0.9fr; 
+            grid-template-columns: 1.3fr 0.9fr;
             gap: 40px;
             max-width: 1200px;
             align-items: start; /* Vital for sticky sidebar */
         }
+
+
+
 
         .input-card {
             background: var(--card-bg);
@@ -136,6 +186,9 @@
             border: 1px solid var(--border-color);
         }
 
+
+
+
         /* --- STICKY SIDEBAR --- */
         .output-wrapper {
             position: sticky;
@@ -143,22 +196,31 @@
             height: fit-content;
         }
 
+
+
+
         .output-card {
             background: var(--card-bg);
             padding: 35px;
             border-radius: 18px;
             border: 1px solid var(--border-color);
-            min-height: 300px; 
+            min-height: 300px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
         }
-        
+       
         .output-card.has-results {
             border-color: var(--accent-blue);
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
         }
 
+
+
+
         label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 0.9rem; }
+
+
+
 
         select, input {
             width: 100%;
@@ -173,9 +235,15 @@
             transition: border-color 0.3s;
         }
 
+
+
+
         select:focus, input:focus { border-color: var(--accent-blue); }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
+
+
+
 
         .btn-analyze {
             background: var(--accent-blue);
@@ -191,7 +259,13 @@
             margin-top: 10px;
         }
 
+
+
+
         .btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+
+
+
 
         .output-item {
             display: flex;
@@ -201,6 +275,9 @@
             font-size: 0.95rem;
         }
         .val { color: var(--accent-blue); font-weight: bold; font-size: 1.1rem; }
+
+
+
 
         .info-pill {
             background: rgba(255,255,255,0.03);
@@ -213,6 +290,29 @@
             gap: 10px;
         }
 
+        .explanation-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(59,130,246,0.1);
+            border-radius: 12px;
+            border: 1px solid var(--accent-blue);
+        }
+
+        .explanation-box h4 {
+            font-size: 1rem;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .explanation-box p {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+
+
+
         footer {
             padding: 40px 8%;
             border-top: 1px solid var(--border-color);
@@ -223,30 +323,227 @@
             margin-top: 0;
         }
 
+
+
+
         /* ================= MOBILE RESPONSIVENESS ================= */
         @media (max-width: 900px) {
             .grid-container {
                 grid-template-columns: 1fr; /* Stack vertically */
                 gap: 30px;
             }
-            
+           
             /* Disable sticky on mobile so it sits naturally at the bottom */
             .output-wrapper {
-                position: static; 
+                position: static;
             }
+
+
+
 
             .hero { padding-top: 140px; padding-bottom: 60px; }
             .hero h1 { font-size: 2.5rem; }
-            
+           
             .highlights { flex-wrap: wrap; }
             .stat-card { width: 100%; }
-            
+           
             nav { flex-direction: column; gap: 15px; }
             .nav-right { width: 100%; justify-content: space-between; }
+        }
+
+
+        .hero-cta {
+            margin-top: 35px;
+        }
+
+
+        .hero-cta button {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
+        }
+
+
+        .hero-cta button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+        }
+
+
+
+
+        /* ===== PIPELINE SECTION ===== */
+        .pipeline {
+            padding: 100px 8%;
+            text-align: center;
+            background: linear-gradient(to bottom, #0a0c10, #0d111a);
+        }
+
+
+        .pipeline-subtitle {
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+
+        .pipeline-title {
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+        }
+
+
+        .pipeline-flow {
+            color: var(--text-gray);
+            margin-bottom: 60px;
+            font-size: 1rem;
+        }
+
+
+        .pipeline-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+        }
+
+
+        /* connecting line */
+        .pipeline-steps::before {
+            content: "";
+            position: absolute;
+            top: 45px;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+
+
+        .pipeline-step {
+            width: 100%;
+            max-width: 280px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+
+        .step-box {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            background: #0f1623;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-gray);
+            transition: 0.3s;
+        }
+
+
+        .step-box:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(59,130,246,0.2);
+            transform: translateY(-5px);
+            color: white;
+        }
+
+
+        .pipeline-step h3 {
+            margin-bottom: 10px;
+        }
+
+
+        .pipeline-step p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 900px) {
+            .pipeline-steps {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+
+            .pipeline-steps::before {
+                display: none;
+            }
+        }
+       
+       
+        .analytics-section {
+            margin-top: 40px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+
+        .analytics-section h3 {
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+        }
+
+
+        .chart-container {
+            background: #0f1623;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+
+        .chart-container:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(59,130,246,0.15);
+        }
+
+
+        .reset-btn {
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-gray);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
+
+
+
 
     <nav>
         <div class="logo" onclick="showPage('home')">🏗️ ConcreteAI</div>
@@ -258,15 +555,18 @@
         </div>
     </nav>
 
+
+
+
     <section id="home-view">
         <div class="hero">
             <h1>ConcreteAI Intelligence</h1>
             <p class="hero-description">
-                Real-time AI to predict concrete's strength, costs, and carbon emissions instantly. 
-                Replace reactive testing with predictive intelligence to optimize material performance, 
+                Real-time AI to predict concrete's strength, costs, and carbon emissions instantly.
+                Replace reactive testing with predictive intelligence to optimize material performance,
                 protect project margins, and achieve sustainability targets.
             </p>
-            
+           
             <div class="highlights">
                 <div class="stat-card">
                     <h3>95%</h3>
@@ -281,39 +581,109 @@
                     <p>AI-Powered Model</p>
                 </div>
             </div>
+            <div class="hero-cta">
+                <button onclick="showPage('estimator')">
+                    Start AI Prediction
+                </button>
+            </div>
         </div>
     </section>
+
+
+    <section class="pipeline">
+        <p class="pipeline-subtitle">STEP-BY-STEP AI OPTIMIZATION PIPELINE</p>
+        <h2 class="pipeline-title">How ConcreteAI Works</h2>
+        <p class="pipeline-flow">
+            Inputs → AI Model → Performance Metrics → Decision Support
+        </p>
+
+
+        <div class="pipeline-steps">
+            <div class="pipeline-step">
+                <div class="step-box">
+                    <span>1</span>
+                </div>
+                <h3>Enter Mix Parameters</h3>
+                <p>Define cement, aggregates, water, and admixture values for your concrete mix.</p>
+            </div>
+
+
+            <div class="pipeline-step">
+                <div class="step-box">
+                    <span>2</span>
+                </div>
+                <h3>AI Model Analysis</h3>
+                <p>Machine learning model evaluates strength, cost, and environmental impact.</p>
+            </div>
+
+
+            <div class="pipeline-step">
+                <div class="step-box">
+                    <span>3</span>
+                </div>
+                <h3>Optimized Results</h3>
+                <p>View predicted compressive strength, cost estimation, and CO₂ emissions.</p>
+            </div>
+        </div>
+    </section>
+
 
     <section id="estimator-view">
         <h2 class="section-title">Mix Design Predictor</h2>
         <div class="grid-container">
-            
+           
             <div class="input-card">
                 <h4 style="margin-bottom: 20px; color: white;">Input Materials</h4>
-                
+               
                 <label>Cement (kg/m³)</label>
                 <input type="number" id="cement" placeholder="e.g. 350" step="any">
+
+
+
 
                 <label>Fly Ash (kg/m³)</label>
                 <input type="number" id="flyash" placeholder="e.g. 100" step="any">
 
+
+
+
                 <label>GGBS (kg/m³)</label>
                 <input type="number" id="ggbs" placeholder="e.g. 50" step="any">
+
+
+                <label>Metakaolin (kg/m³)</label>
+                <input type="number" id="metakaolin" placeholder="e.g. 20" step="any">
+
 
                 <label>Coarse Aggregate (kg/m³)</label>
                 <input type="number" id="coarse_agg" placeholder="e.g. 1100" step="any">
 
+
+
+
                 <label>Fine Aggregate (kg/m³)</label>
                 <input type="number" id="fine_agg" placeholder="e.g. 750" step="any">
+
+
+
 
                 <label>Water (kg/m³)</label>
                 <input type="number" id="water" placeholder="e.g. 180" step="any">
 
+
+
+
                 <label>Admixture (Ltrs)</label>
                 <input type="number" id="admixture" placeholder="e.g. 3.5" step="any">
 
+
+
+
                 <label>Target Days (N)</label>
                 <input type="number" id="days" placeholder="e.g. 28">
+
+
+
 
                 <button class="btn-analyze" onclick="generateOutput()">Predict Strength</button>
             </div>
@@ -325,7 +695,7 @@
                         <p style="color: var(--text-gray); margin-bottom: 30px; font-size: 0.9rem;">
                             Fill in the mix parameters to generate real-time strength, cost, and emission predictions.
                         </p>
-                        
+                       
                         <div class="info-pill">
                             <span>🚀</span>
                             <div style="text-align: left;">
@@ -351,13 +721,22 @@
                 </div>
             </div>
 
+
+
+
         </div>
     </section>
 
+
+
+
     <footer>
-        <p>Team Anveshi | Nirma University</p>
+        <p>Team Igniting Brains</p>
         <p>Data Privacy Protected</p>
     </footer>
+
+
+
 
     <script>
         function showPage(page) {
@@ -365,12 +744,14 @@
             const estimator = document.getElementById('estimator-view');
             const navHome = document.getElementById('nav-home');
 
+
+
+
             if(page === 'home') {
                 home.style.display = 'block';
                 estimator.style.display = 'none';
                 navHome.classList.add('active');
             } else {
-                home.style.display = 'block'; 
                 home.style.display = 'none';
                 estimator.style.display = 'block';
                 navHome.classList.remove('active');
@@ -378,74 +759,192 @@
             }
         }
 
+
+
+
         async function generateOutput() {
+
+
             const inputs = {
-                cement: document.getElementById('cement').value,
-                flyash: document.getElementById('flyash').value,
-                ggbs: document.getElementById('ggbs').value,
-                coarse_agg: document.getElementById('coarse_agg').value,
-                fine_agg: document.getElementById('fine_agg').value,
-                water: document.getElementById('water').value,
-                admixture: document.getElementById('admixture').value,
-                days: document.getElementById('days').value
+                cement: parseFloat(document.getElementById('cement').value),
+                flyash: parseFloat(document.getElementById('flyash').value),
+                ggbs: parseFloat(document.getElementById('ggbs').value),
+                metakaolin: parseFloat(document.getElementById('metakaolin').value),
+                coarse_agg: parseFloat(document.getElementById('coarse_agg').value),
+                fine_agg: parseFloat(document.getElementById('fine_agg').value),
+                water: parseFloat(document.getElementById('water').value),
+                admixture: parseFloat(document.getElementById('admixture').value),
+                days: parseFloat(document.getElementById('days').value)
             };
 
+
+
+
+
             for (let key in inputs) {
-                if (inputs[key] === "") {
+                if (isNaN(inputs[key])) {
                     alert("Please fill in all fields.");
                     return;
                 }
             }
 
+
+
+
             const resultsDiv = document.getElementById('results');
             resultsDiv.classList.add('has-results');
-            
+           
             resultsDiv.innerHTML = `
                 <div style="text-align:center; padding: 40px;">
                     <p style="color:var(--text-gray);">Analyzing Mix Design...</p>
                 </div>
             `;
 
+
+               
+           
+
+
             try {
+                // Engineering constraints
+                if (inputs.cement < 200 || inputs.cement > 550) {
+                    alert("Cement should be between 200–550 kg/m³");
+                    return;
+                }
+
+
+                if (inputs.water < 100 || inputs.water > 220) {
+                    alert("Water should be between 100–220 kg/m³");
+                    return;
+                }
+
+
+                if (inputs.flyash < 0 || inputs.flyash > 150) {
+                    alert("Fly Ash should be between 0–150 kg/m³");
+                    return;
+                }
+
+
+                if (inputs.ggbs < 0 || inputs.ggbs > 250) {
+                    alert("GGBS should be between 0–250 kg/m³");
+                    return;
+                }
+
+
+                if (inputs.coarse_agg < 700 || inputs.coarse_agg > 1250) {
+                    alert("Coarse Aggregate should be between 700–1250 kg/m³");
+                    return;
+                }
+
+
+                if (inputs.fine_agg < 600 || inputs.fine_agg > 900) {
+                    alert("Fine Aggregate should be between 600–900 kg/m³");
+                    return;
+                }
+
+
+                if (inputs.admixture < 1 || inputs.admixture > 5) {
+                    alert("Admixture should be between 1–5 L");
+                    return;
+                }
+
+
+                const total_scm = inputs.flyash + inputs.ggbs + inputs.metakaolin;
+                const total_cementitious = inputs.cement + inputs.flyash + inputs.ggbs + inputs.metakaolin;
+
+
+                if (total_scm >= (0.6 * total_cementitious)) {
+                    alert("Predicted unrealistic mix. \\nTry with another set of inputs.");
+                    return;
+                }
+
                 const response = await fetch('/predict', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(inputs)
                 });
 
+
+
+
                 if (!response.ok) { throw new Error('Network response was not ok'); }
+
+
+
 
                 const data = await response.json();
 
+
+
+
                 resultsDiv.innerHTML = `
-                    <h4 style="margin-bottom:25px; font-size: 1.3rem; color: var(--accent-blue);">Prediction Results</h4>
-                    
+                    <h4 style="margin-bottom:25px; font-size: 1.3rem; color: var(--accent-blue);">
+                    Prediction Results
+                    </h4>
+
+
                     <div class="output-item">
-                        <span>Compressive Strength (${inputs.days} Days)</span> 
+                        <span>Compressive Strength (${inputs.days} Days)</span>
                         <span class="val">${data.strength} MPa</span>
                     </div>
-                    
+
+
                     <div class="output-item">
-                        <span>Estimated Cost</span> 
+                        <span>Estimated Cost</span>
                         <span class="val">₹${data.cost}</span>
                     </div>
-                    
+
+
                     <div class="output-item" style="border-bottom: none;">
-                        <span>CO2 Emissions</span> 
+                        <span>CO2 Emissions</span>
                         <span class="val">${data.co2} kg</span>
                     </div>
 
-                    <div style="margin-top: 25px; padding: 20px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; border: 1px solid var(--accent-blue);">
-                        <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
-                            <strong style="color: white; display:block; margin-bottom:5px;">AI Analysis:</strong> 
+                    <div class="explanation-box">
+                        <h4>Prediction Explanation</h4>
+                        <p>${data.explanation_text || "The prediction is driven by the combined effect of binder content, curing age, water ratio, and aggregate proportions."}</p>
+                    </div>
+
+
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(59,130,246,0.1); border-radius: 12px; border: 1px solid var(--accent-blue);">
+                        <p style="font-size: 0.9rem; color: #cbd5e1;">
+                            <strong style="color: white;">AI Analysis:</strong>
                             This mix is optimized for the ${inputs.days}-day target.
                         </p>
                     </div>
-                    
-                    <button onclick="location.reload()" style="margin-top:20px; background:transparent; border:1px solid var(--border-color); color:var(--text-gray); padding:8px 15px; border-radius:20px; cursor:pointer; font-size:0.8rem;">
+
+
+                    <!-- ===== ANALYTICS SECTION ===== -->
+                    <div class="analytics-section">
+                        <h3>📊 Analytics & Insights</h3>
+
+
+                        <div class="chart-container">
+                            <canvas id="strengthChart"></canvas>
+                        </div>
+
+
+                        <div class="chart-container">
+                            <canvas id="compositionChart"></canvas>
+                        </div>
+
+
+                        <div class="chart-container">
+                            <canvas id="costChart"></canvas>
+                        </div>
+                    </div>
+
+
+                    <button onclick="location.reload()" class="reset-btn">
                         Reset Calculation
                     </button>
                 `;
+                setTimeout(() => {
+                    createCharts(inputs, data);
+                }, 200);
+
+
+
 
                 // --- MOBILE SMART SCROLL ---
                 if (window.innerWidth <= 900) {
@@ -453,6 +952,9 @@
                         resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }, 100);
                 }
+
+
+
 
             } catch (error) {
                 console.error('Error:', error);
@@ -462,6 +964,157 @@
                     </p>
                 `;
             }
+        }
+
+
+        function createCharts(inputs, data) {
+
+
+            /* =============================
+            1. Strength vs W/C Ratio
+            ============================== */
+
+
+            const wc_ratios = [0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75];
+            const strengths = wc_ratios.map(r => 100 - 120*r); // inverse relation
+
+
+            const wc_actual = inputs.water / inputs.cement;
+
+
+            new Chart(document.getElementById('strengthChart'), {
+                type: 'line',
+                data: {
+                    labels: wc_ratios,
+                    datasets: [
+                        {
+                            label: 'Strength Curve',
+                            data: strengths,
+                            borderColor: '#3b82f6',
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Predicted Mix',
+                            data: [{x: wc_actual, y: data.strength}],
+                            borderColor: '#ef4444',
+                            pointRadius: 6,
+                            showLine: false
+                        }
+                    ]
+                },
+                options: darkChartOptions('Water-Cement Ratio', 'Strength (MPa)')
+            });
+
+
+
+
+            /* =============================
+            2. Composition Pie Chart
+            ============================== */
+
+
+            new Chart(document.getElementById('compositionChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Cement','Fly Ash','GGBS','Metakaolin','Water','Fine Agg','Coarse Agg','Admixture'],
+                    datasets: [{
+                        data: [
+                            inputs.cement,
+                            inputs.flyash,
+                            inputs.ggbs,
+                            inputs.metakaolin,
+                            inputs.water,
+                            inputs.fine_agg,
+                            inputs.coarse_agg,
+                            inputs.admixture
+                        ],
+                        backgroundColor: [
+                            '#3b82f6', // blue
+                            '#6366f1', // indigo
+                            '#8b5cf6', // violet
+                            '#06b6d4', // cyan
+                            '#10b981', // green
+                            '#f59e0b', // amber
+                            '#ef4444', // red
+                            '#ec4899', // pink (NEW)
+                            '#84cc16'  // lime green (NEW)
+                        ]
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { labels: { color: 'white' } }
+                    },
+                    animation: {
+                        animateScale: true
+                    }
+                }
+            });
+
+
+
+
+            /* =============================
+            3. Cost vs Strength
+            ============================== */
+
+
+            const costData = [2000,2500,3000,3500,4000,4500];
+            const strengthData = [20,25,30,35,40,45];
+
+
+            new Chart(document.getElementById('costChart'), {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Trend',
+                            data: costData.map((c,i)=>({x:c,y:strengthData[i]})),
+                            borderColor: '#3b82f6'
+                        },
+                        {
+                            label: 'Your Mix',
+                            data: [{x: data.cost, y: data.strength}],
+                            backgroundColor: '#ef4444',
+                            pointRadius: 6
+                        }
+                    ]
+                },
+                options: darkChartOptions('Cost (₹/m³)', 'Strength (MPa)')
+            });
+
+
+        }
+
+
+
+
+        /* =============================
+        COMMON DARK THEME OPTIONS
+        ============================= */
+
+
+        function darkChartOptions(xLabel, yLabel) {
+            return {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: 'white' } },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: xLabel, color: '#94a3b8' },
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: '#1e293b', borderDash: [5,5] }
+                    },
+                    y: {
+                        title: { display: true, text: yLabel, color: '#94a3b8' },
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: '#1e293b', borderDash: [5,5] }
+                    }
+                }
+            };
         }
     </script>
 </body>

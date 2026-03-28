@@ -1,87 +1,151 @@
-from flask import Flask, request, jsonify, render_template
-import numpy as np
 import joblib
+import numpy as np
+import pandas as pd
+from flask import Flask, jsonify, render_template, request
+
+from src.explainability import generate_mix_explanation
 
 app = Flask(__name__)
-model = joblib.load("models/Tuned_CatBoostRegressor.joblib") 
 
+# Load trained XGBoost model
+model = joblib.load("models/ConcreteAI_XGBoost_Best.joblib")
+
+# Feature order must exactly match train.py
+FEATURE_COLUMNS = [
+    "Cement_kg_m3",
+    "Fly_Ash_kg_m3",
+    "GGBS_kg_m3",
+    "metakolin_kg_m3",
+    "Water_kg_m3",
+    "Sand_kg_m3",
+    "AGE",
+    "admixture",
+    "Coarse aggregate",
+    "SCMContent",
+    "Binder",
+    "WBRatio",
+    "AggregateToBinder",
+    "AdmixtureToBinder",
+]
+
+# Cost factors
 COSTS = np.array([
     6.0,    # Cement
-    2.0,    # FlyAsh
+    2.0,    # Fly Ash
     3.6,    # GGBS
+    8.0,    # Metakaolin
     0.0,    # Water
-    1.05,   # Coarse Aggregate (avg of 10mm & 20mm)
     0.9,    # Sand
-    45.0    # Admixture
+    45.0,   # Admixture
+    1.05    # Coarse Aggregate
 ])
 
+# CO2 factors
 CO2_FACTORS = np.array([
     1.008,   # Cement
-    0.026,   # FlyAsh
+    0.026,   # Fly Ash
     0.064,   # GGBS
+    0.45,    # Metakaolin
     0.0003,  # Water
-    0.014,   # Coarse Aggregate (10mm+20mm)
     0.006,   # Sand
-    0.72     # Admixture
+    0.72,    # Admixture
+    0.014    # Coarse Aggregate
 ])
 
+def build_feature_map(cement, flyash, ggbs, metakaolin, water, admixture, coarse_agg, sand, age):
+    scm_content = flyash + ggbs + metakaolin
+    binder = cement + scm_content
+    total_aggregate = sand + coarse_agg
 
-# ================= HOME PAGE =================
-@app.route('/')
+    binder_safe = binder if binder != 0 else 1e-8
+
+    wb_ratio = water / binder_safe
+    aggregate_to_binder = total_aggregate / binder_safe
+    admixture_to_binder = admixture / binder_safe
+
+
+
+    return {
+        "Cement_kg_m3": cement,
+        "Fly_Ash_kg_m3": flyash,
+        "GGBS_kg_m3": ggbs,
+        "metakolin_kg_m3": metakaolin,
+        "Water_kg_m3": water,
+        "Sand_kg_m3": sand,
+        "AGE": age,
+        "admixture": admixture,
+        "Coarse aggregate": coarse_agg,
+        "SCMContent": scm_content,
+        "Binder": binder,
+        "WBRatio": wb_ratio,
+        "AggregateToBinder": aggregate_to_binder,
+        "AdmixtureToBinder": admixture_to_binder,
+        "TotalAggregate": total_aggregate
+    }
+
+@app.route("/")
 def home():
     return render_template("index.html")
 
-# ================= PREDICTION ROUTE =================
-@app.route('/predict', methods=['POST'])
+@app.route("/predict", methods=["POST"])
 def predict():
     try:
-        # 1. Get JSON Data from the HTML Frontend
         data = request.get_json()
 
-        # 2. Extract Variables
-        cement = float(data['cement'])
-        flyash = float(data['flyash'])
-        ggbs = float(data['ggbs'])
-        water = float(data['water'])
-        coarse_agg = float(data['coarse_agg'])
-        fine_agg = float(data['fine_agg'])  # Sand
-        admixture = float(data['admixture'])
-        age = float(data['days'])
+        cement = float(data["cement"])
+        flyash = float(data["flyash"])
+        ggbs = float(data["ggbs"])
+        metakaolin = float(data["metakaolin"])
+        water = float(data["water"])
+        admixture = float(data["admixture"])
+        coarse_agg = float(data["coarse_agg"])
+        sand = float(data["fine_agg"])
+        age = float(data["days"])
 
-        # 3. Feature Engineering: Calculate W/B Ratio
-        # WBRatio = Water / (Cement + FlyAsh + GGBS)
-        binder = cement + flyash + ggbs
-        if binder == 0:
-            wb_ratio = 0
-        else:
-            wb_ratio = water / binder
+        feature_map = build_feature_map(
+            cement=cement,
+            flyash=flyash,
+            ggbs=ggbs,
+            metakaolin=metakaolin,
+            water=water,
+            admixture=admixture,
+            coarse_agg=coarse_agg,
+            sand=sand,
+            age=age
+        )
 
-        # 4. Prepare Input Vector for Model
-        # MUST Match the Training Order: 
-        # ['Cement', 'GGBS', 'FlyAsh', 'Water', 'CoarseAggregate', 'Sand', 'Admixture', 'WBRatio', 'age']
-        features = np.array([[cement, ggbs, flyash, water, coarse_agg, fine_agg, admixture, wb_ratio, age]])
+        feature_df = pd.DataFrame([feature_map])[FEATURE_COLUMNS]
 
-        # 5. Predict Strength
-        strength = model.predict(features)[0]
+        strength = float(model.predict(feature_df)[0])
 
-        # 6. Calculate Cost & CO2 (Raw Materials Only)
-        # Order: Cement, FlyAsh, GGBS, Water, CoarseAgg, FineAgg, Admixture
-        quantities = np.array([cement, flyash, ggbs, water, coarse_agg, fine_agg, admixture])
-        
-        cost = np.sum(quantities * COSTS)
-        co2 = np.sum(quantities * CO2_FACTORS)
+        quantities = np.array([
+            cement,
+            flyash,
+            ggbs,
+            metakaolin,
+            water,
+            sand,
+            admixture,
+            coarse_agg
+        ])
 
-        # 7. Return JSON with simple keys matching your HTML JS
+        cost = float(np.sum(quantities * COSTS))
+        co2 = float(np.sum(quantities * CO2_FACTORS))
+
+        explanation_text = generate_mix_explanation(feature_map)
+
         return jsonify({
             "strength": round(strength, 2),
             "cost": round(cost, 2),
-            "co2": round(co2, 2)
+            "co2": round(co2, 2),
+            "explanation_text": explanation_text
         })
 
     except Exception as e:
-        print(f"Error: {e}") # Print error to console for debugging
-        return jsonify({"error": str(e)}), 500
+        print(f"Prediction error: {e}")
+        return jsonify({
+            "error": str(e)
+        }), 500
 
-# ================= RUN SERVER =================
 if __name__ == "__main__":
     app.run(debug=True)
