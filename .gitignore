@@ -1,4 +1,5 @@
-models/
-*.joblib
+models/RandomForest.joblib
+models/CatBoost_Baseline.joblib
+models/XGBoost.joblib
 __pycache__/
 *.pyc
