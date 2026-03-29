@@ -7,8 +7,8 @@ from src.explainability import generate_mix_explanation
 
 app = Flask(__name__)
 
-# Load trained XGBoost model
-model = joblib.load("models/ConcreteAI_XGBoost_Best.joblib")
+# Load trained Random Forest model
+model = joblib.load("models/ConcreteAI_RF_Best.joblib")
 
 # Feature order must exactly match train.py
 FEATURE_COLUMNS = [
