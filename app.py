@@ -8,7 +8,7 @@ from src.explainability import generate_mix_explanation
 app = Flask(__name__)
 
 # Load trained Random Forest model
-model = joblib.load("models/ConcreteAI_RF_Best.joblib")
+model = joblib.load("models/ConcreteAI_XGBoost_Best.joblib")
 
 # Feature order must exactly match train.py
 FEATURE_COLUMNS = [
@@ -136,6 +136,8 @@ def predict():
 
         return jsonify({
             "strength": round(strength, 2),
+            "strength_14d": round(strength * 0.85, 2),
+            "strength_7d": round(strength * 0.63, 2),
             "cost": round(cost, 2),
             "co2": round(co2, 2),
             "explanation_text": explanation_text

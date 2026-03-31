@@ -46,7 +46,7 @@ models = {
     "RandomForest": "models/RandomForest.joblib",
     "XGBoost": "models/XGBoost.joblib",
     "CatBoost_Baseline": "models/CatBoost_Baseline.joblib",
-    "RandomForest_Tuned": "models/ConcreteAI_RF_Best.joblib",
+    "XGBoost_Tuned": "models/ConcreteAI_XGBoost_Best.joblib",
 }
 
 table = PrettyTable()
