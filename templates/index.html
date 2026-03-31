@@ -143,10 +143,10 @@
         /* --- GRID LAYOUT --- */
         .grid-container {
             display: grid;
-            grid-template-columns: 1.3fr 0.9fr;
-            gap: 40px;
-            max-width: 1200px;
-            align-items: start; /* Vital for sticky sidebar */
+            grid-template-columns: 2fr 3fr; /* 40% input, 60% output */
+            gap: 24px;
+            margin-top: 20px;
+            align-items: start;
         }
 
 
@@ -155,6 +155,7 @@
             padding: 35px;
             border-radius: 18px;
             border: 1px solid var(--border-color);
+
         }
 
 
@@ -164,7 +165,6 @@
             top: 100px; /* Sticks 100px from top of viewport */
             height: fit-content;
         }
-
 
         .output-card {
             background: var(--card-bg);
@@ -180,6 +180,7 @@
             border-color: var(--accent-blue);
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
         }
+
 
 
         label { display: block; margin-bottom: 8px; color: var(--text-gray); font-size: 0.9rem; }
@@ -397,40 +398,83 @@
             }
         }
         
-        
-        .analytics-section {
-            margin-top: 40px;
-            animation: fadeInUp 0.8s ease;
-        }
+        /* ===== ANALYTICS SECTION ===== */
 
-        .analytics-section h3 {
-            margin-bottom: 20px;
-            color: var(--accent-blue);
-        }
+            .analytics-section {
+                margin-top: 60px;
+                animation: fadeInUp 0.8s ease;
+            }
 
-        .chart-container {
-            background: #0f1623;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            transition: 0.3s;
-        }
+            .chart-container {
+                background: #0f1623;
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 30px;
+                text-align: center;
+                transition: 0.3s;
+            }
 
-        .chart-container:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 20px rgba(59,130,246,0.15);
-        }
+            .chart-container:hover {
+                border-color: var(--accent-blue);
+                box-shadow: 0 0 20px rgba(59,130,246,0.15);
+            }
 
-        .reset-btn {
-            margin-top: 20px;
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-gray);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
+            .chart-title {
+                color: white;
+                font-size: 1rem;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+
+            .chart-conclusion {
+                color: var(--text-gray);
+                font-size: 0.85rem;
+                margin-top: 10px;
+                line-height: 1.4;
+            }
+
+            /* Donut Layout */
+            .composition-layout {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+            }
+
+            .composition-chart {
+                width: 180px;
+                height: 180px;
+            }
+
+            .composition-values {
+                text-align: left;
+                font-size: 0.85rem;
+                color: var(--text-gray);
+            }
+
+            .composition-values div {
+                display: flex;
+                align-items: center;
+                margin-bottom: 8px;
+            }
+
+            .color-box {
+                width: 10px;
+                height: 10px;
+                border-radius: 2px;
+                margin-right: 8px;
+            }
+
+            .reset-btn {
+                margin-top: 20px;
+                background: transparent;
+                border: 1px solid var(--border-color);
+                color: var(--text-gray);
+                padding: 8px 15px;
+                border-radius: 20px;
+                cursor: pointer;
+            }
 
         /* Animation */
         @keyframes fadeInUp {
@@ -442,6 +486,19 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .analytics-section {
+            margin-top: 60px;
+        }
+
+        #analytics-global {
+            max-width: 1200px;
+            margin: 60px auto 0;
+        }
+
+        .chart-container {
+            margin-bottom: 30px;
         }
     </style>
 </head>
@@ -532,33 +589,33 @@
                 <h4 style="margin-bottom: 20px; color: white;">Input Materials</h4>
                
                 <label>Cement (kg/m³)</label>
-                <input type="number" id="cement" placeholder="e.g. 350" step="any">
+                <input type="number" id="cement" placeholder="e.g. 180" step="any">
 
 
                 <label>Fly Ash (kg/m³)</label>
-                <input type="number" id="flyash" placeholder="e.g. 100" step="any">
+                <input type="number" id="flyash" placeholder="e.g. 80" step="any">
 
 
                 <label>GGBS (kg/m³)</label>
-                <input type="number" id="ggbs" placeholder="e.g. 50" step="any">
+                <input type="number" id="ggbs" placeholder="e.g. 70" step="any">
 
                 <label>Metakaolin (kg/m³)</label>
                 <input type="number" id="metakaolin" placeholder="e.g. 20" step="any">
 
                 <label>Coarse Aggregate (kg/m³)</label>
-                <input type="number" id="coarse_agg" placeholder="e.g. 1100" step="any">
+                <input type="number" id="coarse_agg" placeholder="e.g. 1050" step="any">
 
 
                 <label>Fine Aggregate (kg/m³)</label>
-                <input type="number" id="fine_agg" placeholder="e.g. 750" step="any">
+                <input type="number" id="fine_agg" placeholder="e.g. 720" step="any">
 
 
                 <label>Water (kg/m³)</label>
-                <input type="number" id="water" placeholder="e.g. 180" step="any">
+                <input type="number" id="water" placeholder="e.g. 150" step="any">
 
 
                 <label>Admixture (Ltrs)</label>
-                <input type="number" id="admixture" placeholder="e.g. 3.5" step="any">
+                <input type="number" id="admixture" placeholder="e.g. 3" step="any">
 
 
                 <label>Target Days (N)</label>
@@ -604,6 +661,8 @@
 
 
         </div>
+        
+        
     </section>
 
 
@@ -636,15 +695,15 @@
         async function generateOutput() {
 
             const inputs = {
-                cement: document.getElementById('cement').value,
-                flyash: document.getElementById('flyash').value,
-                ggbs: document.getElementById('ggbs').value,
-                metakaolin: parseFloat(document.getElementById('metakaolin').value),
-                coarse_agg: document.getElementById('coarse_agg').value,
-                fine_agg: document.getElementById('fine_agg').value,
-                water: document.getElementById('water').value,
-                admixture: document.getElementById('admixture').value,
-                days: document.getElementById('days').value
+                cement: parseFloat(document.getElementById("cement").value),
+                flyash: parseFloat(document.getElementById("flyash").value),
+                ggbs: parseFloat(document.getElementById("ggbs").value),
+                metakaolin: parseFloat(document.getElementById("metakaolin").value),
+                water: parseFloat(document.getElementById("water").value),
+                fine_agg: parseFloat(document.getElementById("fine_agg").value),
+                coarse_agg: parseFloat(document.getElementById("coarse_agg").value),
+                admixture: parseFloat(document.getElementById("admixture").value),
+                days: parseFloat(document.getElementById("days").value)
             };
 
 
@@ -707,18 +766,24 @@
                 }
 
                 const total_scm = inputs.flyash + inputs.ggbs + inputs.metakaolin;
-                const total_cementitious= inputs.cement + inputs.flyash + inputs.ggbs + inputs.metakaolin;
+                const total_cementitious = inputs.cement + total_scm;
 
-                if (total_scm <= (0.6*total_cementitious)) {
-                    alert("Predicted Unrealistic Mix. \nTry with another set of inputs.")
+                const scm_ratio = total_scm / total_cementitious;
+
+                if (scm_ratio > 0.6) {
+                    alert(`Predicted Unrealistic Mix.
+                    SCM replacement too high (${(scm_ratio*100).toFixed(1)}%).
+                    Try reducing Fly Ash / GGBS / Metakaolin.`);
                     return;
                 }
 
 
                 const wc_ratio = inputs.water / (inputs.cement + inputs.flyash + inputs.ggbs + inputs.metakaolin);
 
+                
                 if (wc_ratio < 0.2 || wc_ratio > 0.55) {
-                    alert("Water-Cement ratio should be between 0.2–0.55. \nWith present inputs: Water-Cement ratio= ${wc_ratio}");
+                    alert(`Water-Cement ratio should be between 0.2–0.55.
+                    Current value: ${wc_ratio.toFixed(2)}`);
                     return;
                 }
 
@@ -765,25 +830,70 @@
 
                     <!-- ===== ANALYTICS SECTION ===== -->
                     <div class="analytics-section">
-                        <h3>📊 Analytics & Insights</h3>
 
-                        <div class="chart-container">
-                            <canvas id="strengthChart"></canvas>
+                    <div class="chart-container">
+                        <div class="chart-title">
+                            Strength vs Water-Cement Ratio
                         </div>
 
-                        <div class="chart-container">
-                            <canvas id="compositionChart"></canvas>
-                        </div>
+                        <canvas id="strengthChart"></canvas>
 
-                        <div class="chart-container">
-                            <canvas id="costChart"></canvas>
+                        <div class="chart-conclusion">
+                            Lower water-cement ratio improves compressive strength. 
+                            The plotted point shows where your mix lies on the theoretical strength curve.
                         </div>
                     </div>
+
+                    <div class="chart-container">
+                        <div class="chart-title">
+                            Material Composition Distribution
+                        </div>
+
+                        <div class="composition-layout">
+
+                            <div class="composition-chart">
+                                <canvas id="compositionChart"></canvas>
+                            </div>
+
+                            <div class="composition-values">
+                                <div><span class="color-box" style="background:#3b82f6"></span>Cement: ${inputs.cement} kg/m³</div>
+                                <div><span class="color-box" style="background:#6366f1"></span>Fly Ash: ${inputs.flyash} kg/m³</div>
+                                <div><span class="color-box" style="background:#8b5cf6"></span>GGBS: ${inputs.ggbs} kg/m³</div>
+                                <div><span class="color-box" style="background:#06b6d4"></span>Metakaolin: ${inputs.metakaolin} kg/m³</div>
+                                <div><span class="color-box" style="background:#14b8a6"></span>Water: ${inputs.water} kg/m³</div>
+                                <div><span class="color-box" style="background:#22c55e"></span>Fine Aggregate: ${inputs.fine_agg} kg/m³</div>
+                                <div><span class="color-box" style="background:#f59e0b"></span>Coarse Aggregate: ${inputs.coarse_agg} kg/m³</div>
+                                <div><span class="color-box" style="background:#ef4444"></span>Admixture: ${inputs.admixture} L</div>
+                            </div>
+
+                        </div>
+
+                        <div class="chart-conclusion">
+                            This breakdown highlights cementitious and aggregate proportions 
+                            affecting workability, strength, and durability.
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-title">
+                            Cost vs Strength Trade-off
+                        </div>
+
+                        <canvas id="costChart"></canvas>
+
+                        <div class="chart-conclusion">
+                            Your mix is compared with a general cost-strength trend to 
+                            evaluate economic efficiency.
+                        </div>
+                    </div>
+
 
                     <button onclick="location.reload()" class="reset-btn">
                         Reset Calculation
                     </button>
                 `;
+                
+                
                 setTimeout(() => {
                     createCharts(inputs, data);
                 }, 200);
@@ -844,13 +954,22 @@
 
 
             /* =============================
-            2. Composition Pie Chart
+            2. Composition Doughnut Chart
             ============================== */
 
             new Chart(document.getElementById('compositionChart'), {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
-                    labels: ['Cement','Fly Ash','GGBS','Metakaolin','Water','Fine Agg','Coarse Agg','Admixture'],
+                    labels: [
+                        'Cement',
+                        'Fly Ash',
+                        'GGBS',
+                        'Metakaolin',
+                        'Water',
+                        'Fine Agg',
+                        'Coarse Agg',
+                        'Admixture'
+                    ],
                     datasets: [{
                         data: [
                             inputs.cement,
@@ -863,24 +982,31 @@
                             inputs.admixture
                         ],
                         backgroundColor: [
-                            '#3b82f6', // blue
-                            '#6366f1', // indigo
-                            '#8b5cf6', // violet
-                            '#06b6d4', // cyan
-                            '#10b981', // green
-                            '#f59e0b', // amber
-                            '#ef4444', // red
-                            '#ec4899', // pink (NEW)
-                            '#84cc16'  // lime green (NEW)
-                        ]
+                            '#3b82f6',  // primary blue
+                            '#1d4ed8',  // deep blue
+                            '#6366f1',  // indigo
+                            '#06b6d4',  // cyan
+                            '#10b981',  // emerald
+                            '#22c55e',  // green
+                            '#f59e0b',  // amber
+                            '#ef4444'   // red accent
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 6
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
                     plugins: {
-                        legend: { labels: { color: 'white' } }
+                        legend: {
+                            display: false
+                        }
                     },
                     animation: {
-                        animateScale: true
+                        animateScale: true,
+                        animateRotate: true
                     }
                 }
             });
